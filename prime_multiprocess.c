@@ -1,11 +1,4 @@
-/* * GROUP PROJECT: Prime Benchmark
- * -----------------------------
- * Person 1: Main & Input Parsing
- * Person 2: is_prime() logic
- * Person 3: get_logical_cores()
- * Person 4: Time calculation
- * Person 5: Forking & Process Management
- */
+ // GROUP PROJECT: Prime Calculation
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,27 +6,19 @@
 #include <sys/wait.h>
 #include <sys/time.h>
 
-// ==========================================
-// Roll 11 AREA: Prime Logic
-// ==========================================
 int is_prime(int n) {
     // TODO: Person 2 implements prime check here
     return 0; 
 }
 
-// ==========================================
-// Roll 12 AREA: System Info
-// ==========================================
 int get_logical_cores() {
     // TODO: Person 3 implements core counting here
     return 1; 
 }
 
 int main(int argc, char *argv[]) {
-// ==========================================
-// Roll 13 AREA: Timer Helper
-// ==========================================
-if (argc != 4) return 1;
+
+    if (argc != 4) return 1;
 
     int rl = atoi(argv[1]);
     int rh = atoi(argv[2]);
@@ -44,10 +29,7 @@ if (argc != 4) return 1;
 
     int range_size = (rh - rl + 1) / n_procs;
 
-// ==========================================
-// Roll 14 AREA: Process Manager
-
-   for (int i = 0; i < n_procs; i++) {
+    for (int i = 0; i < n_procs; i++) {
         if (fork() == 0) {
             int start_num = rl + i * range_size;
             int end_num = (i == n_procs - 1) ? rh : start_num + range_size - 1;
@@ -58,20 +40,14 @@ if (argc != 4) return 1;
             exit(0);
         }
     }
-// ==========================================
 
+    for (int i = 0; i < n_procs; i++)
+         wait(NULL);
 
-// ==========================================
-// Roll 15 AREA: Main Function
-// ==========================================
-for (int i = 0; i < n_procs; i++)
-        wait(NULL);
+    gettimeofday(&end, NULL);
 
-gettimeofday(&end, NULL);
+    double time_taken =(end.tv_sec - start.tv_sec) +(end.tv_usec - start.tv_usec) / 1000000.0;
 
-double time_taken =(end.tv_sec - start.tv_sec) +(end.tv_usec - start.tv_usec) / 1000000.0;
-
-printf("%f", time_taken);
-    // TODO: Person 1 connects everything here
+    printf("%f", time_taken);
     return 0;
 }
