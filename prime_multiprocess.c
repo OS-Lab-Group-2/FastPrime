@@ -64,7 +64,14 @@ if (argc != 4) return 1;
 // ==========================================
 // Roll 15 AREA: Main Function
 // ==========================================
+for (int i = 0; i < n_procs; i++)
+        wait(NULL);
 
+gettimeofday(&end, NULL);
+
+double time_taken =(end.tv_sec - start.tv_sec) +(end.tv_usec - start.tv_usec) / 1000000.0;
+
+printf("%f", time_taken);
     // TODO: Person 1 connects everything here
     return 0;
 }
