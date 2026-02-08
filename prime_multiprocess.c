@@ -33,7 +33,16 @@ int main(int argc, char *argv[]) {
 // ==========================================
 // Roll 13 AREA: Timer Helper
 // ==========================================
+if (argc != 4) return 1;
 
+    int rl = atoi(argv[1]);
+    int rh = atoi(argv[2]);
+    int n_procs = atoi(argv[3]);
+
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
+
+    int range_size = (rh - rl + 1) / n_procs;
 
 // ==========================================
 // Roll 14 AREA: Process Manager
