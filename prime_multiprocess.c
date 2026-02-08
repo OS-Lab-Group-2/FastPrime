@@ -37,6 +37,18 @@ int main(int argc, char *argv[]) {
 
 // ==========================================
 // Roll 14 AREA: Process Manager
+
+   for (int i = 0; i < n_procs; i++) {
+        if (fork() == 0) {
+            int start_num = rl + i * range_size;
+            int end_num = (i == n_procs - 1) ? rh : start_num + range_size - 1;
+
+            for (int j = start_num; j <= end_num; j++) {
+                is_prime(j);   // computation only (benchmarking)
+            }
+            exit(0);
+        }
+    }
 // ==========================================
 
 
