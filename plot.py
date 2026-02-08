@@ -13,6 +13,17 @@ import os
 
 # ==========================================
 # Roll 17 AREA: Runner
+c_executable = "./prime_multiprocess"
+
+ranges = [
+    (1000, 10000),
+    (50000, 100000),
+    (100000, 500000)
+]
+
+# Get logical processors dynamically
+max_processes = os.cpu_count()
+plt.figure(figsize=(10, 6))
 # ==========================================
 
 if not os.path.exists(c_executable):
