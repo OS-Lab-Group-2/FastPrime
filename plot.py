@@ -23,6 +23,7 @@ ranges = [
 
 # Get logical processors dynamically
 max_processes = os.cpu_count()
+plt.figure(figsize=(10, 6))
 # ==========================================
 
 
