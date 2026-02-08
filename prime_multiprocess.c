@@ -24,9 +24,15 @@ int is_prime(int n) {
 // ==========================================
 // Roll 12 AREA: System Info
 // ==========================================
+// Getting number of logical processors using lscpu
 int get_logical_cores() {
-    // TODO: Person 3 implements core counting here
-    return 1; 
+    FILE *fp = popen("lscpu | grep '^CPU(s):' | awk '{print $2}'", "r");
+    if (!fp) return 1;
+
+    int cores = 1;
+    fscanf(fp, "%d", &cores);
+    pclose(fp);
+    return cores;
 }
 
 int main(int argc, char *argv[]) {
