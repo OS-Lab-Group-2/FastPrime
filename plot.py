@@ -15,10 +15,14 @@ import os
 # Roll 17 AREA: Runner
 # ==========================================
 
+if not os.path.exists(c_executable):
+    print("Executable not found. Compile C code first.")
+    exit()
 
-# ==========================================
-# Roll 18 AREA: Data Collector
-# ==========================================
+for rl, rh in ranges:
+    print(f"\nRunning benchmarks for range {rl}-{rh}")
+    x = []
+    y = []
 
 
 # ==========================================
