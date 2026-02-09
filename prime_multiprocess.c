@@ -1,11 +1,4 @@
-/* * GROUP PROJECT: Prime Benchmark
- * -----------------------------
- * Person 1: Main & Input Parsing
- * Person 2: is_prime() logic
- * Person 3: get_logical_cores()
- * Person 4: Time calculation
- * Person 5: Forking & Process Management
- */
+ // GROUP PROJECT: Prime Calculation
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,18 +6,15 @@
 #include <sys/wait.h>
 #include <sys/time.h>
 
-// ==========================================
-// Roll 11 AREA: Prime Logic
-// ==========================================
 int is_prime(int n) {
-    // TODO: Person 2 implements prime check here
-    return 0; 
+    if (n <= 1) return 0;
+    for (int i = 2; i * i <= n; i++) {
+        if (n % i == 0) return 0;
+    }
+    return 1;
+ 
 }
 
-// ==========================================
-// Roll 12 AREA: System Info
-// ==========================================
-// Getting number of logical processors using lscpu
 int get_logical_cores() {
     FILE *fp = popen("lscpu | grep '^CPU(s):' | awk '{print $2}'", "r");
     if (!fp) return 1;
@@ -36,20 +26,37 @@ int get_logical_cores() {
 }
 
 int main(int argc, char *argv[]) {
-// ==========================================
-// Roll 13 AREA: Timer Helper
-// ==========================================
 
+    if (argc != 4) return 1;
 
-// ==========================================
-// Roll 14 AREA: Process Manager
-// ==========================================
+    int rl = atoi(argv[1]);
+    int rh = atoi(argv[2]);
+    int n_procs = atoi(argv[3]);
 
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
 
-// ==========================================
-// Roll 15 AREA: Main Function
-// ==========================================
+    int range_size = (rh - rl + 1) / n_procs;
 
-    // TODO: Person 1 connects everything here
+    for (int i = 0; i < n_procs; i++) {
+        if (fork() == 0) {
+            int start_num = rl + i * range_size;
+            int end_num = (i == n_procs - 1) ? rh : start_num + range_size - 1;
+
+            for (int j = start_num; j <= end_num; j++) {
+                is_prime(j);   // computation only (benchmarking)
+            }
+            exit(0);
+        }
+    }
+
+    for (int i = 0; i < n_procs; i++)
+         wait(NULL);
+
+    gettimeofday(&end, NULL);
+
+    double time_taken =(end.tv_sec - start.tv_sec) +(end.tv_usec - start.tv_usec) / 1000000.0;
+
+    printf("%f", time_taken);
     return 0;
 }
